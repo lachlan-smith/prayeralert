@@ -10,7 +10,7 @@ Plugin for the OSRS RuneLite client to alert the player when their prayer is low
 2. Run the "Install" Maven Build found under RuneLite -> Lifecycle
 
 ## Running
-1. Launch the compiled Java file found in `\runelite\runelite-client\target` named `client-1.5.xx-SNAPSHOT-shaded.jar` (If SNAPSHOT-shaded files are in this directory, launch the one with the latest version number)
+1. Launch the compiled Java file found in `\runelite\runelite-client\target` named `client-1.5.xx-SNAPSHOT-shaded.jar` (If multiple SNAPSHOT-shaded files are in this directory, launch the one with the latest version number)
 
 ## Acknowledgements 
 * Mikki for her [original modification](https://github.com/mikkikur/runelite/tree/runelite-prayer) to the Prayer plugin
