@@ -17,4 +17,14 @@ public interface PrayerAlertConfig extends Config
     {
         return false;
     }
+    @ConfigItem(
+            position = 2,
+            keyName = "oldRenderMode",
+            name = "Render using old method",
+            description = "Render the prayer alert using the old method"
+    )
+    default boolean oldRenderMode()
+    {
+        return false;
+    }
 }

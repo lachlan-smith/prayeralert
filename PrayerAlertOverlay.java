@@ -1,18 +1,18 @@
 package net.runelite.client.plugins.prayeralert;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 
 import net.runelite.api.*;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.stats.Stats;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class PrayerAlertOverlay extends Overlay
@@ -28,6 +28,7 @@ class PrayerAlertOverlay extends Overlay
     private PrayerAlertOverlay(Client client, PrayerAlertConfig config, ItemManager itemManager)
     {
         setPosition(OverlayPosition.TOP_RIGHT);
+        setLayer(OverlayLayer.ABOVE_WIDGETS);
         this.client = client;
         this.config = config;
         this.itemManager = itemManager;
@@ -37,22 +38,36 @@ class PrayerAlertOverlay extends Overlay
     public Dimension render(Graphics2D graphics)
     {
         panelComponent.getChildren().clear();
-            int prayerLevel = getPrayerLevel();
-            int prayerPoints = getPrayerPoints();
-
+        int prayerLevel = getPrayerLevel();
+        int prayerPoints = getPrayerPoints();
+        if (config.oldRenderMode()){
             if (config.alwaysShowAlert()){
                 boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
                 if (drink) {
-                    prayerRestorePanel(panelComponent, graphics);
+                    oldPrayerRestorePanel(graphics);
                 }
             }
             else {
                 boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
                 boolean hasPrayerPotion = checkInventoryForPotion();
                 if (drink && hasPrayerPotion) {
-                    prayerRestorePanel(panelComponent, graphics);
+                    oldPrayerRestorePanel(graphics);
                 }
             }
+        }
+        if (config.alwaysShowAlert()){
+            boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
+            if (drink) {
+                prayerRestorePanel(panelComponent, graphics);
+            }
+        }
+        else {
+            boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
+            boolean hasPrayerPotion = checkInventoryForPotion();
+            if (drink && hasPrayerPotion) {
+                prayerRestorePanel(panelComponent, graphics);
+            }
+        }
 
         return panelComponent.render(graphics);
     }
@@ -119,5 +134,39 @@ class PrayerAlertOverlay extends Overlay
                 .build());
         panelComponent.setPreferredSize(new Dimension(
                 graphics.getFontMetrics().stringWidth("Drink") + 12,0));
+    }
+
+    private void oldPrayerRestorePanel(Graphics2D graphics){
+        graphics.translate(-100, 15);
+        graphics.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
+        graphics.fillRect(0, 0, 100, 45);
+
+        graphics.drawImage(itemManager.getImage(ItemID.PRAYER_POTION4), null, 14, 7);
+
+        Font dropShadow1 = FontManager.getRunescapeFont();
+        dropShadow1 = dropShadow1.deriveFont(Font.PLAIN);
+        graphics.setFont(dropShadow1);
+        graphics.setColor(new Color(0f, 0f, 0f, 0.6f));
+        graphics.drawString("Drink", 56, 20);
+
+        Font drinkFont1 = FontManager.getRunescapeFont();
+        drinkFont1 = drinkFont1.deriveFont(Font.PLAIN);
+        graphics.setFont(drinkFont1);
+        graphics.setColor(new Color(1.0f, 0.03529412f, 0.0f));
+        graphics.translate(-0.8, -0.8);
+        graphics.drawString("Drink", 56, 20);
+
+        Font dropShadow2 = FontManager.getRunescapeFont();
+        dropShadow2 = dropShadow2.deriveFont(Font.PLAIN);
+        graphics.setFont(dropShadow2);
+        graphics.setColor(new Color(0f, 0f, 0f, 0.6f));
+        graphics.drawString("Potion", 53, 40);
+
+        Font drinkFont2 = FontManager.getRunescapeFont();
+        drinkFont2 = drinkFont2.deriveFont(Font.PLAIN);
+        graphics.setFont(drinkFont2);
+        graphics.setColor(new Color(1.0f, 0.03529412f, 0.0f));
+        graphics.translate(-0.8, -0.8);
+        graphics.drawString("Potion", 53, 40);
     }
 }
