@@ -55,20 +55,21 @@ class PrayerAlertOverlay extends Overlay
                 }
             }
         }
-        if (config.alwaysShowAlert()){
-            boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
-            if (drink) {
-                prayerRestorePanel(panelComponent, graphics);
+        else{
+            if (config.alwaysShowAlert()){
+                boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
+                if (drink) {
+                    prayerRestorePanel(panelComponent, graphics);
+                }
+            }
+            else {
+                boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
+                boolean hasPrayerPotion = checkInventoryForPotion();
+                if (drink && hasPrayerPotion) {
+                    prayerRestorePanel(panelComponent, graphics);
+                }
             }
         }
-        else {
-            boolean drink = drinkPrayerPotion(prayerLevel, prayerPoints);
-            boolean hasPrayerPotion = checkInventoryForPotion();
-            if (drink && hasPrayerPotion) {
-                prayerRestorePanel(panelComponent, graphics);
-            }
-        }
-
         return panelComponent.render(graphics);
     }
 
