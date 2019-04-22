@@ -2,7 +2,7 @@
 Plugin for the OSRS RuneLite client to alert the player when their prayer is low.
 
 ## Requirements
-* [RuneLite developer enviroment](https://github.com/runelite/runelite/wiki/Building-with-IntelliJ-IDEA)
+* [RuneLite Developer Enviroment](https://github.com/runelite/runelite/wiki/Building-with-IntelliJ-IDEA)
 * [Java Development Kit](https://www.oracle.com/technetwork/java/javaee/downloads/jdk8-downloads-2133151.html)
 
 ## Installation
